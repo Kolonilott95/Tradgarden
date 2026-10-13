@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Det som växer – Trädgården</title>
+<style>
+  :root {
+    --accent: #3B7D3A;
+    --accent-light: #EAF3E6;
+    --accent-mid: #3B7D3A;
+    --accent-dark: #2F5A2C;
+    --accent-border: #C5DDBD;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #1a1a1a; }
+
+  header { background: var(--accent-dark); color: #fff; padding: 1.5rem 2rem; }
+  header h1 { font-size: 1.6rem; font-weight: 500; }
+  header p { font-size: 0.95rem; opacity: 0.8; margin-top: 4px; }
+
+  .about {
+    background: var(--accent-light);
+    border-bottom: 1px solid var(--accent-border);
+    padding: 1rem 2rem;
+    font-size: 0.9rem;
+    color: var(--accent-dark);
+  }
+
+  .layout {
+    display: flex;
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  #sidebar { width: 180px; min-width: 180px; position: sticky; top: 1rem; }
+  #sidebar h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 0.5rem; }
+  .month-link {
+    display: block; padding: 6px 10px; font-size: 0.9rem; color: #555;
+    cursor: pointer; border-left: 2px solid transparent; border-radius: 0 4px 4px 0;
+    text-decoration: none; transition: all 0.15s;
+  }
+  .month-link:hover { color: var(--accent); background: var(--accent-light); }
+  .month-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-light); font-weight: 500; }
+  .entry-link {
+    display: block; padding: 5px 10px; font-size: 0.82rem; color: #666;
+    cursor: pointer; border-left: 2px solid transparent; border-radius: 0 4px 4px 0;
+    text-decoration: none; transition: all 0.15s; line-height: 1.35;
+  }
+  .entry-link:hover { color: var(--accent); background: var(--accent-light); }
+  .entry-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-light); font-weight: 500; }
+  .nav-divider { height: 1px; background: #e5e9f0; margin: 8px 10px; }
+
+  #main { flex: 1; min-width: 0; }
+
+  .month-section { margin-bottom: 2.5rem; }
+  .month-heading {
+    font-size: 0.78rem; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.07em; color: #999; margin-bottom: 1rem;
+    padding-bottom: 6px; border-bottom: 1px solid #e5e9f0;
+  }
+
+  .entry-card {
+    background: #fff; border: 1px solid #e5e9f0; border-radius: 12px;
+    padding: 1.1rem 1.3rem; margin-bottom: 1rem; transition: border-color 0.15s;
+  }
+  .entry-card:hover { border-color: #b3d1a8; }
+  .entry-date { font-size: 0.78rem; color: #aaa; margin-bottom: 3px; }
+  .entry-title { font-size: 1rem; font-weight: 500; color: #1a1a1a; margin-bottom: 6px; }
+  .entry-body { font-size: 0.9rem; color: #555; line-height: 1.7; white-space: pre-wrap; }
+  .entry-images { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .entry-img { width: 100px; height: 78px; object-fit: cover; border-radius: 7px; border: 1px solid #e5e9f0; cursor: pointer; }
+  .entry-videos { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .entry-video { width: 100%; max-width: 480px; border-radius: 8px; border: 1px solid #e5e9f0; background: #000; }
+
+  #empty-state { text-align: center; padding: 3rem 1rem; color: #bbb; font-size: 1rem; }
+
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999; cursor: zoom-out;
+  }
+  .lightbox img { max-width: 92vw; max-height: 92vh; border-radius: 8px; }
+
+  @media (max-width: 640px) {
+    .layout { flex-direction: column; }
+    #sidebar { width: 100%; position: static; display: flex; gap: 8px; flex-wrap: wrap; }
+    #sidebar h3 { display: none; }
+    .month-link { border-left: none; border-bottom: 2px solid transparent; border-radius: 4px; }
+    .month-link.active { border-bottom-color: var(--accent); }
+    .entry-link { border-left: none; border-bottom: 2px solid transparent; font-size: 0.8rem; }
+    .entry-link.active { border-bottom-color: var(--accent); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 Det som växer</h1>
+  <p>Trädgården</p>
+  <a href="https://kolonilott95.github.io/Kolonilotten/" style="color:rgba(255,255,255,0.7);font-size:0.8rem;text-decoration:none;display:block;margin-top:6px;">&#8592; Kolonilotten</a>
+</header>
+
+<div class="about">
+  <strong>Om projektet:</strong> Trädgården på kolonilotten, från det som fanns innan till det som tar form. Där gamla stugan stod ska det växa igen. En trädgård blir aldrig klar, den blir bara lite mer sig själv för varje säsong.
+</div>
+
+<div class="layout">
+  <nav id="sidebar">
+    <h3>Arbetspass</h3>
+    <div id="month-nav"></div>
+  </nav>
+  <main id="main">
+    <div id="entries-container"></div>
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script>
+function isoWeek(d) {
+  const x = new Date(d.getTime());
+  x.setHours(0, 0, 0, 0);
+  x.setDate(x.getDate() + 3 - (x.getDay() + 6) % 7);
+  const week1 = new Date(x.getFullYear(), 0, 4);
+  return 1 + Math.round(((x - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+}
+
+function sortedEntries() {
+  return [...entries].sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
+}
+
+function groupByMonth(sorted) {
+  const months = {};
+  sorted.forEach(e => {
+    const d = new Date(e.date);
+    const key = d.toLocaleString('sv-SE', { year: 'numeric', month: 'long' });
+    if (!months[key]) months[key] = [];
+    months[key].push(e);
+  });
+  return months;
+}
+
+function entryNavLabel(e) {
+  const d = new Date(e.date);
+  const week = isoWeek(d);
+  const day = d.toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' });
+  return `v.${week} · ${day} – ${e.title}`;
+}
+
+function render() {
+  const container = document.getElementById('entries-container');
+  const nav = document.getElementById('month-nav');
+  const sorted = sortedEntries();
+
+  if (!sorted.length) {
+    container.innerHTML = '<div id="empty-state">Ingenting har grott här än. Kom tillbaka snart.</div>';
+    nav.innerHTML = '';
+    return;
+  }
+
+  nav.innerHTML = sorted.map((e, i) =>
+    `<a class="entry-link${i===0?' active':''}" onclick="scrollToEntry(${e.id},this)" href="#">${entryNavLabel(e)}</a>`
+  ).join('');
+
+  const grouped = groupByMonth(sorted);
+  const keys = Object.keys(grouped);
+
+  container.innerHTML = keys.map(month => {
+    const cards = grouped[month].map(e => {
+      const imgs = (e.images||[]).map((src,i) =>
+        `<img class="entry-img" src="${src}" onclick="lightbox('${e.id}',${i})" alt="Bild från trädgården">`
+      ).join('');
+      const vids = (e.videos||[]).map(src =>
+        `<video class="entry-video" src="${src}" controls playsinline preload="metadata"></video>`
+      ).join('');
+      return `<article class="entry-card" id="e-${e.id}">
+        <div class="entry-date">${new Date(e.date).toLocaleDateString('sv-SE',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div>
+        <div class="entry-title">${e.title}</div>
+        ${e.body ? `<div class="entry-body">${e.body}</div>` : ''}
+        ${imgs ? `<div class="entry-images">${imgs}</div>` : ''}
+        ${vids ? `<div class="entry-videos">${vids}</div>` : ''}
+      </article>`;
+    }).join('');
+    return `<section class="month-section" data-month="${month}"><div class="month-heading">${month}</div>${cards}</section>`;
+  }).join('');
+}
+
+function scrollToEntry(id, el) {
+  event.preventDefault();
+  document.querySelectorAll('.entry-link').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  const card = document.getElementById('e-' + id);
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+var _lbe = null, _lbi = 0;
+function lightbox(id, idx) {
+  _lbe = entries.find(function(x){ return x.id == id; });
+  if (!_lbe) return;
+  _lbi = idx;
+  showLb();
+}
+function showLb() {
+  var ex = document.getElementById('lbox');
+  if (ex) ex.remove();
+  var e = _lbe, tot = e.images.length;
+  var lb = document.createElement('div');
+  lb.id = 'lbox';
+  lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:999;cursor:zoom-out;';
+  lb.onclick = function(){ lb.remove(); };
+  var inner = document.createElement('div');
+  inner.style.cssText = 'display:flex;flex-direction:column;align-items:center;cursor:default;';
+  inner.onclick = function(ev){ ev.stopPropagation(); };
+  var img = document.createElement('img');
+  img.src = e.images[_lbi];
+  img.style.cssText = 'max-width:90vw;max-height:78vh;border-radius:8px;';
+  var ctrl = document.createElement('div');
+  ctrl.style.cssText = 'display:flex;align-items:center;gap:24px;margin-top:16px;';
+  if (_lbi > 0) {
+    var prev = document.createElement('button');
+    prev.innerHTML = '&#8592;';
+    prev.style.cssText = 'background:rgba(255,255,255,0.2);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;';
+    prev.onclick = function(){ _lbi--; showLb(); };
+    ctrl.appendChild(prev);
+  } else {
+    var sp = document.createElement('span');
+    sp.style.cssText = 'width:44px;height:44px;display:inline-block;';
+    ctrl.appendChild(sp);
+  }
+  var num = document.createElement('span');
+  num.style.cssText = 'color:rgba(255,255,255,0.85);font-size:15px;min-width:50px;text-align:center;';
+  num.textContent = (_lbi+1) + ' / ' + tot;
+  ctrl.appendChild(num);
+  if (_lbi < tot-1) {
+    var nxt = document.createElement('button');
+    nxt.innerHTML = '&#8594;';
+    nxt.style.cssText = 'background:rgba(255,255,255,0.2);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;';
+    nxt.onclick = function(){ _lbi++; showLb(); };
+    ctrl.appendChild(nxt);
+  }
+  inner.appendChild(img);
+  inner.appendChild(ctrl);
+  lb.appendChild(inner);
+  document.body.appendChild(lb);
+}
+
+render();
+</script>
+</body>
+</html>
